@@ -18,6 +18,16 @@ class MyString{
   static const nextTuesday = "Next Tuesday";
   static const afterWeek = "After 1 Week";
   static const noDate = "No date";
+  static const currentEmployees = "Current employees";
+  static const previousEmployees = "Previous employees";
+  static const from = "From";
+
+  //db strings
+  static const name = "name";
+  static const role = "role";
+  static const fromDate = "fromDate";
+  static const toDate = "toDate";
+
 
   // basic strings
   static const confirm = "Confirm";

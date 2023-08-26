@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bloc_base_structure/Values/values.dart';
+import 'package:assignment_task/Values/values.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../spaces.dart';

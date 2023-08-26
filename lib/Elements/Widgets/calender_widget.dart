@@ -1,10 +1,9 @@
-import 'package:bloc_base_structure/Constants/Extensions/extensions.dart';
-import 'package:bloc_base_structure/Constants/constants.dart';
-import 'package:bloc_base_structure/Elements/Widgets/common_widgets.dart';
-import 'package:bloc_base_structure/Elements/Widgets/custom_button.dart';
-import 'package:bloc_base_structure/Elements/Widgets/spaces.dart';
-import 'package:bloc_base_structure/Values/values.dart';
-import 'package:bloc_base_structure/themes/Style/text_styles.dart';
+import 'package:assignment_task/Constants/Extensions/extensions.dart';
+import 'package:assignment_task/Constants/constants.dart';
+import 'package:assignment_task/Elements/Widgets/common_widgets.dart';
+import 'package:assignment_task/Elements/Widgets/spaces.dart';
+import 'package:assignment_task/Values/values.dart';
+import 'package:assignment_task/themes/Style/text_styles.dart';
 import 'package:flutter/material.dart';
 import '../Lib/table_calendar/table_calendar.dart';
 
@@ -18,7 +17,11 @@ class ButtonInfo {
 
 class CustomDatePickerDialog extends StatefulWidget {
   final bool isToDate;
-  const CustomDatePickerDialog({Key? key, required this.isToDate}) : super(key: key);
+  final DateTime? fromDate;
+  final DateTime? toDate;
+
+  const CustomDatePickerDialog({Key? key, required this.isToDate, required this.fromDate, this.toDate})
+      : super(key: key);
 
   @override
   State<CustomDatePickerDialog> createState() => _CustomDatePickerDialogState();
@@ -27,13 +30,15 @@ class CustomDatePickerDialog extends StatefulWidget {
 class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
   DateTime? _selectedDate;
   DateTime _focusedDay = DateTime.now();
+  DateTime firstDay = DateTime(DateTime.now().year - 20, 1, 1);
   CalendarFormat _calendarFormat = CalendarFormat.month;
   int selectedButtonIndex = -1;
   int toButtonIndex = 0;
   List<ButtonInfo> buttons = [
     ButtonInfo(MyString.today, MyColor.buttonColor, MyColor.buttonBgColor),
     ButtonInfo(MyString.nextMonday, MyColor.buttonColor, MyColor.buttonBgColor),
-    ButtonInfo(MyString.nextTuesday, MyColor.buttonColor, MyColor.buttonBgColor),
+    ButtonInfo(
+        MyString.nextTuesday, MyColor.buttonColor, MyColor.buttonBgColor),
     ButtonInfo(MyString.afterWeek, MyColor.buttonColor, MyColor.buttonBgColor),
   ];
 
@@ -79,18 +84,46 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
       }
       if (index == 0) {
         _selectedDate = null;
-      }else {
+      } else {
         _selectedDate = DateTime.now();
       }
     });
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    setFirstDay();
+  }
+  void setFirstDay(){
+    if(widget.fromDate != null){
+      firstDay = widget.fromDate!;
+      _focusedDay = widget.fromDate!;
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    if(!widget.isToDate && _selectedDate == null) {
+      if(widget.fromDate != null){
+        _selectedDate = widget.fromDate;
+      }else{
+        _selectedDate = DateTime.now();
+      }
+    }
+    if(widget.isToDate && widget.toDate != null && _selectedDate == null){
+      _selectedDate = widget.toDate;
+    }
+    // if user select to date first and after select from date( before date )
+    // if (widget.isToDate && _focusedDay.isBefore(widget.fromDate!)) {
+    //   _focusedDay = widget.fromDate!;
+    // }
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: Sizes.WIDTH_16),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(Sizes.RADIUS_10),
       ),
       child: Wrap(
         children: [
@@ -107,12 +140,20 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                         crossAxisSpacing: Sizes.WIDTH_16,
                         mainAxisExtent: Sizes.HEIGHT_50),
                     shrinkWrap: true,
-                    itemCount: widget.isToDate ? toDateButtons.length : buttons.length,
+                    itemCount:
+                        widget.isToDate ? toDateButtons.length : buttons.length,
                     itemBuilder: (BuildContext context, int index) {
-                      ButtonInfo buttonInfo = widget.isToDate ?  toDateButtons[index] : buttons[index];
-                      bool isSelected = index == (widget.isToDate ? toButtonIndex :  selectedButtonIndex);
+                      ButtonInfo buttonInfo = widget.isToDate
+                          ? toDateButtons[index]
+                          : buttons[index];
+                      bool isSelected = index ==
+                          (widget.isToDate
+                              ? toButtonIndex
+                              : selectedButtonIndex);
                       return CommonWidgets.customButton(
-                          onPressed: () => widget.isToDate ? _handleToDateButtonClick(index)  : _handleButtonClick(index),
+                          onPressed: () => widget.isToDate
+                              ? _handleToDateButtonClick(index)
+                              : _handleButtonClick(index),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                               isSelected
@@ -125,7 +166,7 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                               isSelected ? Colors.white : MyColor.appTheme);
                     }),
                 TableCalendar(
-                  firstDay: DateTime(DateTime.now().year - 20, 1, 1),
+                  firstDay: firstDay,
                   lastDay: DateTime(DateTime.now().year + 5, 12, 31),
                   focusedDay: _focusedDay,
                   // currentDay: _selectedDate,
@@ -134,7 +175,10 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                       selectedDecoration: const BoxDecoration(
                           color: MyColor.appTheme, shape: BoxShape.circle),
                       todayDecoration: BoxDecoration(
-                          border: Border.all(color: widget.isToDate ? MyColor.transparent : MyColor.appTheme),
+                          border: Border.all(
+                              color: widget.isToDate
+                                  ? MyColor.transparent
+                                  : MyColor.appTheme),
                           color: MyColor.transparent,
                           shape: BoxShape.circle),
                       todayTextStyle: const TextStyle(color: MyColor.appTheme)),
@@ -143,9 +187,12 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                     titleCentered: true,
                     titleTextStyle: TextStyles.appbarTextStyle
                         .copyWith(color: MyColor.textColor),
-                    leftChevronIcon: CommonWidgets.customIcon(iconPath: IconPath.leftTabIcon,color: MyColor.appTheme),
-                    rightChevronIcon:
-                    CommonWidgets.customIcon(iconPath: IconPath.rightTabIcon,color: MyColor.appTheme),
+                    leftChevronIcon: CommonWidgets.customIcon(
+                        iconPath: IconPath.leftTabIcon,
+                        color: MyColor.appTheme),
+                    rightChevronIcon: CommonWidgets.customIcon(
+                        iconPath: IconPath.rightTabIcon,
+                        color: MyColor.appTheme),
                     headerMargin: const EdgeInsets.all(0),
                   ),
                   selectedDayPredicate: (day) {
@@ -183,12 +230,14 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Image.asset( IconPath.calendarIcon,
-                            height: Sizes.WIDTH_23,
-                            width: Sizes.WIDTH_23,
-                            color: MyColor.appTheme),
+                            Image.asset(IconPath.calendarIcon,
+                                height: Sizes.WIDTH_23,
+                                width: Sizes.WIDTH_23,
+                                color: MyColor.appTheme),
                             const SpaceW8(),
-                            Text(_selectedDate != null ? _selectedDate!.toDialogDate() : MyString.noDate),
+                            Text(_selectedDate != null
+                                ? _selectedDate!.toDialogDate()
+                                : MyString.noDate),
                           ],
                         ),
                       ),
@@ -199,18 +248,23 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              CommonWidgets.customButton(width: Sizes.WIDTH_90,textColor: MyColor.appTheme,
-                                onPressed: () => Navigator.pop(context),
-                                buttonText: MyString.cancel,
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(
-                                    MyColor.buttonBgColor,
-                                  ),
-                                )
-                              ),
+                              CommonWidgets.customButton(
+                                  width: Sizes.WIDTH_90,
+                                  textColor: MyColor.appTheme,
+                                  onPressed: () => Navigator.pop(context),
+                                  buttonText: MyString.cancel,
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      MyColor.buttonBgColor,
+                                    ),
+                                  )),
                               const SpaceW12(),
-                              CommonWidgets.customButton(width: Sizes.WIDTH_90,textColor: MyColor.white,
-                                onPressed: () => Navigator.pop(context, _selectedDate),
+                              CommonWidgets.customButton(
+                                width: Sizes.WIDTH_90,
+                                textColor: MyColor.white,
+                                onPressed: () =>
+                                    Navigator.pop(context, _selectedDate),
                                 buttonText: MyString.save,
                               ),
                             ],
@@ -227,5 +281,4 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
       ),
     );
   }
-
 }

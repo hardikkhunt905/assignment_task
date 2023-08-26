@@ -1,6 +1,4 @@
-import 'dart:developer' as d;
-import 'package:bloc_base_structure/Values/values.dart';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:logger/logger.dart';
 
@@ -16,24 +14,9 @@ double screenWidth = ScreenUtil().screenWidth;
 double screenHeight = ScreenUtil().screenWidth;
 double screenHeightOrg = ScreenUtil().screenHeight;
 
-
-// Shared Preference
-const isLogInPref = "Is User Log In";
-
-
 // database
-const databaseName = "database";
-const userDataTable = "UserDataTable";
-const waterDataTable = "WaterDataTable";
-
-// Notification
-const scheduleNotification = "scheduleNotification";
-
-// Firebase
-const application = "Application";
-const appPackageName = "App Package Name";
-
-
+const databaseName = "Employee_Database";
+const tableName = "employees";
 
 class Debug {
   static void setLog(String val){
@@ -41,5 +24,18 @@ class Debug {
   }
   static void setErrorLog(String val){
     if(debug) logger.e(val);
+  }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const BouncingScrollPhysics();
   }
 }

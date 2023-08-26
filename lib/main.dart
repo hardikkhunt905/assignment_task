@@ -1,7 +1,7 @@
-import 'package:bloc_base_structure/Constants/constants.dart';
-import 'package:bloc_base_structure/Routing/pages.dart';
-import 'package:bloc_base_structure/Ui/Splash/splash_screen.dart';
-import 'package:bloc_base_structure/Values/values.dart';
+import 'package:assignment_task/Constants/constants.dart';
+import 'package:assignment_task/Routing/pages.dart';
+import 'package:assignment_task/Ui/Splash/splash_screen.dart';
+import 'package:assignment_task/Values/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: MyString.assignment,
             routes: Pages.pages,
+            scrollBehavior: MyCustomScrollBehavior(),
             theme: ThemeData(
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.adaptivePlatformDensity,

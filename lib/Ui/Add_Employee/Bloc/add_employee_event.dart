@@ -4,16 +4,18 @@ part of 'add_employee_bloc.dart';
 abstract class AddEmployeeEvent {}
 
 class SelectRoleChanged extends AddEmployeeEvent {
-  String? selectedRole;
+  final String? selectedRole;
   SelectRoleChanged(this.selectedRole);
 }
 
 class SelectedFromDateChanged extends AddEmployeeEvent {
-  String? selectedFromDate;
+  final DateTime? selectedFromDate;
   SelectedFromDateChanged(this.selectedFromDate);
 }
 
 class SelectedToDateChanged extends AddEmployeeEvent {
-  String? selectedToDate;
+  final DateTime? selectedToDate;
   SelectedToDateChanged(this.selectedToDate);
 }
+
+class SaveEmployeeDetails extends AddEmployeeEvent {}

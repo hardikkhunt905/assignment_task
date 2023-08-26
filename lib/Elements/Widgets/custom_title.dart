@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bloc_base_structure/Elements/Widgets/custom_styles.dart';
+import 'package:assignment_task/Elements/Widgets/custom_styles.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import 'package:flutter/material.dart';
-import 'package:bloc_base_structure/Elements/Lib/simple_gesture_detector/simple_gesture_detector.dart';
+import 'package:assignment_task/Elements/Lib/simple_gesture_detector/simple_gesture_detector.dart';
 
 import 'shared/utils.dart';
 import 'widgets/calendar_core.dart';

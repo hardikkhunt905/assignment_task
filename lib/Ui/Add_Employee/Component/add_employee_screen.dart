@@ -1,12 +1,13 @@
-import 'package:bloc_base_structure/Constants/Extensions/extensions.dart';
-import 'package:bloc_base_structure/Constants/constants.dart';
-import 'package:bloc_base_structure/Elements/Widgets/common_widgets.dart';
-import 'package:bloc_base_structure/Elements/Widgets/spaces.dart';
-import 'package:bloc_base_structure/Ui/Add_Employee/Bloc/add_employee_bloc.dart';
-import 'package:bloc_base_structure/Values/values.dart';
+import 'package:assignment_task/Constants/Extensions/extensions.dart';
+import 'package:assignment_task/Constants/constants.dart';
+import 'package:assignment_task/Elements/Widgets/common_widgets.dart';
+import 'package:assignment_task/Elements/Widgets/spaces.dart';
+import 'package:assignment_task/Ui/Add_Employee/Bloc/add_employee_bloc.dart';
+import 'package:assignment_task/Values/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../Constants/Utils/utils.dart';
 import '../../../Elements/Widgets/calender_widget.dart';
 import '../../../themes/Style/text_styles.dart';
 
@@ -15,40 +16,39 @@ class AddEmployeeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: _bottomBar(context: context),
-      appBar: CommonWidgets.customAppBar(title: MyString.addEmployeeDetails),
-      body: _bodyWidget(),
+    return BlocProvider<AddEmployeeBloc>(
+      create: (context) => AddEmployeeBloc(),
+      child: BlocBuilder<AddEmployeeBloc, AddEmployeeState>(
+          builder: (context, state) {
+            final bloc = context.read<AddEmployeeBloc>();
+            return Scaffold(
+            bottomSheet: _bottomSheet(context: context,bloc:bloc),
+            appBar: CommonWidgets.customAppBar(title: MyString.addEmployeeDetails),
+            body: _bodyWidget(bloc,context,state),
+          );
+        }
+      ),
     );
   }
 
-  Widget _bodyWidget() {
-    return BlocProvider<AddEmployeeBloc>(
-      create: (context) => AddEmployeeBloc(),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              vertical: Sizes.WIDTH_16, horizontal: Sizes.WIDTH_16),
-          child: BlocBuilder<AddEmployeeBloc, AddEmployeeState>(
-            builder: (context, state) {
-              final bloc = context.read<AddEmployeeBloc>();
-              return Form(
-                child: Column(
-                  children: [
-                    const SpaceH24(),
-                    _textField(
-                        controller: bloc.nameController,
-                        hint: MyString.nameHint),
-                    const SpaceH23(),
-                    dropDownWidget(bloc, state, context),
-                    const SpaceH26(),
-                    selectDateWidget(bloc, state, context)
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
+  Widget _bodyWidget(AddEmployeeBloc bloc, BuildContext context, AddEmployeeState state) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            vertical: Sizes.WIDTH_16, horizontal: Sizes.WIDTH_16),
+        child: Form(
+              child: Column(
+                children: [
+                  const SpaceH24(),
+                  _textField(
+                      controller: bloc.nameController, hint: MyString.nameHint),
+                  const SpaceH23(),
+                  dropDownWidget(bloc, state, context),
+                  const SpaceH26(),
+                  selectDateWidget(bloc, state, context)
+                ],
+              ),
+            )
       ),
     );
   }
@@ -74,7 +74,10 @@ class AddEmployeeScreen extends StatelessWidget {
         decoration: Decorations.fieldBorderBoxDecoration(),
         child: Row(
           children: [
-            CommonWidgets.customIcon(iconPath: IconPath.roleIcon,color: MyColor.appTheme,size: Sizes.WIDTH_18),
+            CommonWidgets.customIcon(
+                iconPath: IconPath.roleIcon,
+                color: MyColor.appTheme,
+                size: Sizes.WIDTH_18),
             Text(
               roleText,
               style: textStyle,
@@ -129,11 +132,13 @@ class AddEmployeeScreen extends StatelessWidget {
   Widget selectDateWidget(
       AddEmployeeBloc bloc, AddEmployeeState state, BuildContext context) {
     bool isFromDateSelected = bloc.selectedFromDate != null;
-    String fromDateText =
-        isFromDateSelected ? bloc.selectedFromDate! : MyString.today;
+    String fromDateText = isFromDateSelected
+        ? bloc.selectedFromDate!.toDialogDate()
+        : MyString.today;
     bool isToDateSelected = bloc.selectedToDate != null;
-    String toDateText =
-        isToDateSelected ? bloc.selectedToDate! : MyString.noDate;
+    String toDateText = isToDateSelected
+        ? bloc.selectedToDate!.toDialogDate()
+        : MyString.noDate;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -143,7 +148,10 @@ class AddEmployeeScreen extends StatelessWidget {
               onTap: () => openSelectDateDialog(context: context, bloc: bloc),
               date: fromDateText),
         ),
-        CommonWidgets.customIcon(iconPath: IconPath.rightArrowIcon,color: MyColor.appTheme,size: Sizes.WIDTH_14),
+        CommonWidgets.customIcon(
+            iconPath: IconPath.rightArrowIcon,
+            color: MyColor.appTheme,
+            size: Sizes.WIDTH_14),
         Expanded(
           child: dateItemWidget(
               state: state,
@@ -168,7 +176,10 @@ class AddEmployeeScreen extends StatelessWidget {
         decoration: Decorations.fieldBorderBoxDecoration(),
         child: Row(
           children: [
-            CommonWidgets.customIcon(iconPath: IconPath.calendarIcon,color: MyColor.appTheme,size: Sizes.WIDTH_18),
+            CommonWidgets.customIcon(
+                iconPath: IconPath.calendarIcon,
+                color: MyColor.appTheme,
+                size: Sizes.WIDTH_18),
             Text(
               date,
               style: TextStyles.dateTextStyle.copyWith(color: textColor),
@@ -186,21 +197,25 @@ class AddEmployeeScreen extends StatelessWidget {
     DateTime? selectedDate = await showDialog(
       context: context,
       builder: (context) {
-        return CustomDatePickerDialog(isToDate: isToDate ?? false);
+        return CustomDatePickerDialog(isToDate: isToDate ?? false,fromDate : bloc.selectedFromDate,toDate: bloc.selectedToDate,);
       },
     );
     if (selectedDate != null) {
       isToDate ?? false
-          ? bloc.add(SelectedToDateChanged(selectedDate.toDialogDate()))
-          : bloc.add(SelectedFromDateChanged(selectedDate.toDialogDate()));
+          ? bloc.add(SelectedToDateChanged(selectedDate))
+          : bloc.add(SelectedFromDateChanged(selectedDate));
     }
   }
 
-  Widget _bottomBar({required BuildContext context}) {
+  Widget _bottomSheet({required BuildContext context, required AddEmployeeBloc bloc}) {
     return Wrap(children: [
-      Divider(height: Sizes.HEIGHT_2,color: MyColor.dividerColor,),
+      Divider(
+        height: Sizes.HEIGHT_2,
+        color: MyColor.dividerColor,
+      ),
       Padding(
-          padding: EdgeInsets.symmetric(vertical: Sizes.HEIGHT_6,horizontal: Sizes.WIDTH_14),
+          padding: EdgeInsets.symmetric(
+              vertical: Sizes.HEIGHT_6, horizontal: Sizes.WIDTH_14),
           child: Row(
             children: [
               Expanded(
@@ -223,7 +238,7 @@ class AddEmployeeScreen extends StatelessWidget {
                       CommonWidgets.customButton(
                         width: Sizes.WIDTH_90,
                         textColor: MyColor.white,
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => validateData(context,bloc),
                         buttonText: MyString.save,
                       ),
                     ],
@@ -233,5 +248,19 @@ class AddEmployeeScreen extends StatelessWidget {
             ],
           ))
     ]);
+  }
+
+  Future<void> validateData(BuildContext context, AddEmployeeBloc bloc) async {
+    // Validate employee name field
+    if (bloc.nameController.text.isEmpty) {
+      Utils.showSnackBar(
+          context: context, value: "Employee name cannot be empty");
+    } else if (bloc.selectedRole == null) {
+      Utils.showSnackBar(context: context, value: "Please select a role");
+    }else {
+      bloc.add(SaveEmployeeDetails());
+      Navigator.pop(context,true);
+    }
+
   }
 }

@@ -1,5 +1,5 @@
-import 'package:bloc_base_structure/Routing/Routes.dart';
-import 'package:bloc_base_structure/Ui/Add_Employee/Component/add_employee_screen.dart';
+import 'package:assignment_task/Routing/Routes.dart';
+import 'package:assignment_task/Ui/Add_Employee/Component/add_employee_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../Ui/Home/Component/home_screen.dart';

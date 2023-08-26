@@ -10,6 +10,8 @@ class MyColor {
   static const buttonColor = Color(0xFF1DA1F2);
   static const buttonBgColor = Color(0xFFEDF8FF);
   static const dividerColor = Color(0xFFC8C8C8);
+  static const snackBarColor = Color(0xFF323238);
+  static const titleBoxBgColor = Color(0xFFF2F2F2);
 
   static Map<int, Color> materialAppTheme = {
     50:Color.fromRGBO(195,155,211, .1),

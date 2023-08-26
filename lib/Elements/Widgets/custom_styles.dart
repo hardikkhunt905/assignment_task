@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bloc_base_structure/Constants/constants.dart';
-import 'package:bloc_base_structure/Constants/Utils/utils.dart';
+import 'package:assignment_task/Constants/constants.dart';
+import 'package:assignment_task/Constants/Utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomStyles {

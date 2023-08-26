@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
-// import 'package:bloc_base_structure/Constants/Extensions/extensions.dart';
-// import 'package:bloc_base_structure/themes/my_color.dart';
+// import 'package:assignment_task/Constants/Extensions/extensions.dart';
+// import 'package:assignment_task/themes/my_color.dart';
 //
 // class CustomCheckBox extends StatelessWidget {
 //   const CustomCheckBox({Key? key, required this.temp, required this.onChnage,

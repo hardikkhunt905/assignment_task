@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:bloc_base_structure/Elements/Lib/simple_gesture_detector/simple_gesture_detector.dart';
+import 'package:assignment_task/Elements/Lib/simple_gesture_detector/simple_gesture_detector.dart';
 
 import 'customization/calendar_builders.dart';
 import 'customization/calendar_style.dart';

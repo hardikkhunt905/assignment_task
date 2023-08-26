@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bloc_base_structure/Values/values.dart';
+import 'package:assignment_task/Values/values.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../Constants/constants.dart';
@@ -26,6 +26,9 @@ class TextStyles{
 
   static final dateTextStyle = titleTextStyle.copyWith(color: MyColor.dateTextColor,fontWeight: FontWeight.w500,fontSize: 14.sp,fontFamily: uiFontFamily) ;
 
+  static final listTitleTextStyle = titleTextStyle.copyWith(color: MyColor.textColor,fontWeight: FontWeight.w600,fontSize: 16.sp,fontFamily: uiFontFamily) ;
+
+  static final listSubTitleTextStyle = titleTextStyle.copyWith(color: MyColor.textHintColor,fontWeight: FontWeight.w400,fontSize: 14.sp,fontFamily: uiFontFamily) ;
 
 
 

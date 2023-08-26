@@ -1,5 +1,5 @@
-import 'package:bloc_base_structure/Ui/Add_Employee/Bloc/add_employee_bloc.dart';
-import 'package:bloc_base_structure/Ui/Home/bloc/home_bloc.dart';
+import 'package:assignment_task/Ui/Add_Employee/Bloc/add_employee_bloc.dart';
+import 'package:assignment_task/Ui/Home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppBloc {

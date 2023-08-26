@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bloc_base_structure/Constants/Utils/utils.dart';
-import 'package:bloc_base_structure/Elements/Widgets/custom_title.dart';
-import 'package:bloc_base_structure/Values/values.dart';
+import 'package:assignment_task/Constants/Utils/utils.dart';
+import 'package:assignment_task/Elements/Widgets/custom_title.dart';
+import 'package:assignment_task/Values/values.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomAppBar extends StatelessWidget{

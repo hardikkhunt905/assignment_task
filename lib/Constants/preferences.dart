@@ -1,5 +1,5 @@
 
-import 'package:bloc_base_structure/Constants/constants.dart';
+import 'package:assignment_task/Constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {

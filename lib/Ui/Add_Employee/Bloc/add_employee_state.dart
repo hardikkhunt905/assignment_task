@@ -6,18 +6,18 @@ abstract class AddEmployeeState {}
 class AddEmployeeInitial extends AddEmployeeState {}
 
 class RoleSelectionState extends AddEmployeeState{
-  String? selectedRole;
+  final String? selectedRole;
 
   RoleSelectionState(this.selectedRole);}
 
 class FromDateSelectionState extends AddEmployeeState{
-  String? selectedFromDate;
+  final DateTime? selectedFromDate;
 
   FromDateSelectionState(this.selectedFromDate);
 }
 
 class ToDateSelectionState extends AddEmployeeState{
-  String? selectedToDate;
+  final DateTime? selectedToDate;
 
   ToDateSelectionState(this.selectedToDate);
 }

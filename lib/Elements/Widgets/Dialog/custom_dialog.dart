@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bloc_base_structure/Elements/Widgets/Dialog/dialog_widget.dart';
-import 'package:bloc_base_structure/Values/values.dart';
+import 'package:assignment_task/Elements/Widgets/Dialog/dialog_widget.dart';
+import 'package:assignment_task/Values/values.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 ///
