@@ -1,0 +1,70 @@
+name: bloc_base_structure
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.18.1 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+  #Bloc Lib
+  flutter_bloc: ^8.1.3
+  intl: ^0.18.1
+  flutter_screenutil: ^5.9.0
+  logger: ^2.0.1
+  sqflite: ^2.3.0
+  shared_preferences: ^2.2.0
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  flutter_local_notifications: ^9.8.0+1
+  flutter_native_timezone: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+  freezed: ^2.4.2
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.2
+  # flutter pub run change_app_package_name:main com.new.package.name
+  change_app_package_name: ^1.1.0
+  build_runner: ^2.4.6
+  json_serializable: ^6.7.1
+  #flutter pub run build_runner build --delete-conflicting-outputs
+  freezed_annotation: ^2.4.1
+
+#flutter pub run flutter_launcher_icons
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/appLogo2.png"
+  min_sdk_android: 19
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/fonts/
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto/Roboto-Thin.ttf
+          weight: 800
+        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto/Roboto-Black.ttf
+          weight: 600
+        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto/Roboto-Light.ttf
+
