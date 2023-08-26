@@ -1,12 +1,19 @@
 part of 'add_employee_bloc.dart';
 
 @immutable
-abstract class AddEmployeeEvent {
-  String? selectedOption;
-
-  AddEmployeeEvent(this.selectedOption);
-}
+abstract class AddEmployeeEvent {}
 
 class SelectRoleChanged extends AddEmployeeEvent {
-  SelectRoleChanged(super.selectedOption);
+  String? selectedRole;
+  SelectRoleChanged(this.selectedRole);
+}
+
+class SelectedFromDateChanged extends AddEmployeeEvent {
+  String? selectedFromDate;
+  SelectedFromDateChanged(this.selectedFromDate);
+}
+
+class SelectedToDateChanged extends AddEmployeeEvent {
+  String? selectedToDate;
+  SelectedToDateChanged(this.selectedToDate);
 }

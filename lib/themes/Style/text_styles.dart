@@ -19,12 +19,12 @@ class TextStyles{
 
   //signUp text Style
 
-  static final appbarTextStyle = titleTextStyle.copyWith(color: MyColor.white,fontWeight: FontWeight.w500,fontSize: 18.sp,fontFamily: uiFontFamily) ;
+  static final appbarTextStyle = titleTextStyle.copyWith(color: MyColor.white,fontWeight: FontWeight.w600,fontSize: 18.sp,fontFamily: uiFontFamily) ;
 
   static final fieldTextStyle = titleTextStyle.copyWith(color: MyColor.textColor,fontWeight: FontWeight.w400,fontSize: 16.sp,fontFamily: uiFontFamily) ;
   static final hintTextStyle = titleTextStyle.copyWith(color: MyColor.textHintColor,fontWeight: FontWeight.w400,fontSize: 16.sp,fontFamily: uiFontFamily) ;
 
-  static final dateTextStyle = titleTextStyle.copyWith(color: MyColor.dateTextColor,fontWeight: FontWeight.w400,fontSize: 14.sp,fontFamily: uiFontFamily) ;
+  static final dateTextStyle = titleTextStyle.copyWith(color: MyColor.dateTextColor,fontWeight: FontWeight.w500,fontSize: 14.sp,fontFamily: uiFontFamily) ;
 
 
 

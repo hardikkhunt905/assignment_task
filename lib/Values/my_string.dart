@@ -3,7 +3,7 @@ part of values;
 class MyString{
 
 
-  static const assignment = "Assignment";
+  static const assignment = "Assignment Task";
 
   //home Screen
   static const employeeList = "Employee List";
@@ -17,6 +17,7 @@ class MyString{
   static const nextMonday = "Next Monday";
   static const nextTuesday = "Next Tuesday";
   static const afterWeek = "After 1 Week";
+  static const noDate = "No date";
 
   // basic strings
   static const confirm = "Confirm";

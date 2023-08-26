@@ -1,5 +1,7 @@
 import 'package:bloc_base_structure/Constants/Extensions/extensions.dart';
 import 'package:bloc_base_structure/Constants/constants.dart';
+import 'package:bloc_base_structure/Elements/Widgets/common_widgets.dart';
+import 'package:bloc_base_structure/Elements/Widgets/custom_button.dart';
 import 'package:bloc_base_structure/Elements/Widgets/spaces.dart';
 import 'package:bloc_base_structure/Values/values.dart';
 import 'package:bloc_base_structure/themes/Style/text_styles.dart';
@@ -15,26 +17,33 @@ class ButtonInfo {
 }
 
 class CustomDatePickerDialog extends StatefulWidget {
-  const CustomDatePickerDialog({Key? key}) : super(key: key);
+  final bool isToDate;
+  const CustomDatePickerDialog({Key? key, required this.isToDate}) : super(key: key);
 
   @override
   State<CustomDatePickerDialog> createState() => _CustomDatePickerDialogState();
 }
 
 class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
-  DateTime _selectedDate = DateTime.now();
+  DateTime? _selectedDate;
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
   int selectedButtonIndex = -1;
+  int toButtonIndex = 0;
   List<ButtonInfo> buttons = [
     ButtonInfo(MyString.today, MyColor.buttonColor, MyColor.buttonBgColor),
     ButtonInfo(MyString.nextMonday, MyColor.buttonColor, MyColor.buttonBgColor),
-    ButtonInfo(
-        MyString.nextTuesday, MyColor.buttonColor, MyColor.buttonBgColor),
+    ButtonInfo(MyString.nextTuesday, MyColor.buttonColor, MyColor.buttonBgColor),
     ButtonInfo(MyString.afterWeek, MyColor.buttonColor, MyColor.buttonBgColor),
   ];
 
+  List<ButtonInfo> toDateButtons = [
+    ButtonInfo(MyString.noDate, MyColor.buttonColor, MyColor.buttonBgColor),
+    ButtonInfo(MyString.today, MyColor.buttonColor, MyColor.buttonBgColor),
+  ];
+
   void _handleButtonClick(int index) {
+    _selectedDate = _selectedDate ?? DateTime.now();
     setState(() {
       if (selectedButtonIndex == index) {
         selectedButtonIndex = -1; // Deselect the button
@@ -44,19 +53,34 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
       if (index == 0) {
         _selectedDate = DateTime.now();
       } else if (index == 1) {
-        DateTime nextMonday = _selectedDate;
+        DateTime nextMonday = _selectedDate!;
         while (nextMonday.weekday != DateTime.monday) {
-          nextMonday = nextMonday.add(Duration(days: 1));
+          nextMonday = nextMonday.add(const Duration(days: 1));
         }
         _selectedDate = nextMonday;
       } else if (index == 2) {
-        DateTime nextMonday = _selectedDate;
+        DateTime nextMonday = _selectedDate!;
         while (nextMonday.weekday != DateTime.tuesday) {
-          nextMonday = nextMonday.add(Duration(days: 1));
+          nextMonday = nextMonday.add(const Duration(days: 1));
         }
         _selectedDate = nextMonday;
       } else {
-        _selectedDate = DateTime.now().add(Duration(days: 7));
+        _selectedDate = DateTime.now().add(const Duration(days: 7));
+      }
+    });
+  }
+
+  void _handleToDateButtonClick(int index) {
+    setState(() {
+      if (toButtonIndex == index) {
+        toButtonIndex = -1; // Deselect the button
+      } else {
+        toButtonIndex = index;
+      }
+      if (index == 0) {
+        _selectedDate = null;
+      }else {
+        _selectedDate = DateTime.now();
       }
     });
   }
@@ -83,12 +107,12 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                         crossAxisSpacing: Sizes.WIDTH_16,
                         mainAxisExtent: Sizes.HEIGHT_50),
                     shrinkWrap: true,
-                    itemCount: buttons.length,
+                    itemCount: widget.isToDate ? toDateButtons.length : buttons.length,
                     itemBuilder: (BuildContext context, int index) {
-                      ButtonInfo buttonInfo = buttons[index];
-                      bool isSelected = index == selectedButtonIndex;
-                      return customButton(
-                          onPressed: () => _handleButtonClick(index),
+                      ButtonInfo buttonInfo = widget.isToDate ?  toDateButtons[index] : buttons[index];
+                      bool isSelected = index == (widget.isToDate ? toButtonIndex :  selectedButtonIndex);
+                      return CommonWidgets.customButton(
+                          onPressed: () => widget.isToDate ? _handleToDateButtonClick(index)  : _handleButtonClick(index),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                               isSelected
@@ -110,30 +134,21 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                       selectedDecoration: const BoxDecoration(
                           color: MyColor.appTheme, shape: BoxShape.circle),
                       todayDecoration: BoxDecoration(
-                          border: Border.all(color: MyColor.appTheme),
+                          border: Border.all(color: widget.isToDate ? MyColor.transparent : MyColor.appTheme),
                           color: MyColor.transparent,
                           shape: BoxShape.circle),
-                      todayTextStyle: TextStyle(color: MyColor.appTheme)),
+                      todayTextStyle: const TextStyle(color: MyColor.appTheme)),
                   headerStyle: HeaderStyle(
                     formatButtonVisible: false,
                     titleCentered: true,
                     titleTextStyle: TextStyles.appbarTextStyle
                         .copyWith(color: MyColor.textColor),
-                    leftChevronIcon: customIcon(iconPath: IconPath.leftTabIcon),
+                    leftChevronIcon: CommonWidgets.customIcon(iconPath: IconPath.leftTabIcon,color: MyColor.appTheme),
                     rightChevronIcon:
-                        customIcon(iconPath: IconPath.rightTabIcon),
-                    headerMargin: EdgeInsets.all(0),
-                    // leftChevronMargin: EdgeInsets.only(left: Sizes.WIDTH_70),
-                    // rightChevronMargin: EdgeInsets.only(right: Sizes.WIDTH_70),
-                    // leftChevronPadding: EdgeInsets.all(0),
-                    // rightChevronPadding: EdgeInsets.all(0),
+                    CommonWidgets.customIcon(iconPath: IconPath.rightTabIcon,color: MyColor.appTheme),
+                    headerMargin: const EdgeInsets.all(0),
                   ),
                   selectedDayPredicate: (day) {
-                    // Use `selectedDayPredicate` to determine which day is currently selected.
-                    // If this returns true, then `day` will be marked as selected.
-
-                    // Using `isSameDay` is recommended to disregard
-                    // the time-part of compared DateTime objects.
                     return isSameDay(_selectedDate, day);
                   },
                   onDaySelected: (selectedDay, focusedDay) {
@@ -168,9 +183,12 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Icon(Icons.calendar_today),
+                            Image.asset( IconPath.calendarIcon,
+                            height: Sizes.WIDTH_23,
+                            width: Sizes.WIDTH_23,
+                            color: MyColor.appTheme),
                             const SpaceW8(),
-                            Text(_selectedDate.toDialogDate()),
+                            Text(_selectedDate != null ? _selectedDate!.toDialogDate() : MyString.noDate),
                           ],
                         ),
                       ),
@@ -181,18 +199,19 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Cancel'),
+                              CommonWidgets.customButton(width: Sizes.WIDTH_90,textColor: MyColor.appTheme,
+                                onPressed: () => Navigator.pop(context),
+                                buttonText: MyString.cancel,
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                    MyColor.buttonBgColor,
+                                  ),
+                                )
                               ),
                               const SpaceW12(),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context, _selectedDate);
-                                },
-                                child: Text('Save'),
+                              CommonWidgets.customButton(width: Sizes.WIDTH_90,textColor: MyColor.white,
+                                onPressed: () => Navigator.pop(context, _selectedDate),
+                                buttonText: MyString.save,
                               ),
                             ],
                           ),
@@ -209,30 +228,4 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
     );
   }
 
-  Widget customButton(
-      {required void Function()? onPressed,
-      required String buttonText,
-      ButtonStyle? style,
-      Color? textColor}) {
-    return SizedBox(
-      width: screenWidth / 2.5,
-      child: ElevatedButton(
-          style: style,
-          onPressed: onPressed,
-          child: Text(
-            buttonText,
-            style: TextStyles.dateTextStyle.copyWith(color: textColor),
-          )),
-    );
-  }
-
-  Widget customIcon({required String iconPath}) {
-    return IconButton(
-      icon: Image.asset(iconPath,
-          height: Sizes.WIDTH_14,
-          width: Sizes.WIDTH_14,
-          color: MyColor.textHintColor),
-      onPressed: null,
-    );
-  }
 }

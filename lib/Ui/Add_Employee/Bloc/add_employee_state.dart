@@ -1,16 +1,23 @@
 part of 'add_employee_bloc.dart';
 
 @immutable
-abstract class AddEmployeeState {
-  String? selectedRole;
-  AddEmployeeState(this.selectedRole);
+abstract class AddEmployeeState {}
 
-}
-
-class AddEmployeeInitial extends AddEmployeeState {
-  AddEmployeeInitial(super.selectedRole);
-}
+class AddEmployeeInitial extends AddEmployeeState {}
 
 class RoleSelectionState extends AddEmployeeState{
-  RoleSelectionState(super.selectedRole);
+  String? selectedRole;
+
+  RoleSelectionState(this.selectedRole);}
+
+class FromDateSelectionState extends AddEmployeeState{
+  String? selectedFromDate;
+
+  FromDateSelectionState(this.selectedFromDate);
+}
+
+class ToDateSelectionState extends AddEmployeeState{
+  String? selectedToDate;
+
+  ToDateSelectionState(this.selectedToDate);
 }

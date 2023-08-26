@@ -1,4 +1,4 @@
-import 'package:bloc_base_structure/Blocs/app_bloc.dart';
+import 'package:bloc_base_structure/Constants/Extensions/extensions.dart';
 import 'package:bloc_base_structure/Constants/constants.dart';
 import 'package:bloc_base_structure/Elements/Widgets/common_widgets.dart';
 import 'package:bloc_base_structure/Elements/Widgets/spaces.dart';
@@ -16,6 +16,7 @@ class AddEmployeeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: _bottomBar(context: context),
       appBar: CommonWidgets.customAppBar(title: MyString.addEmployeeDetails),
       body: _bodyWidget(),
     );
@@ -40,7 +41,7 @@ class AddEmployeeScreen extends StatelessWidget {
                         hint: MyString.nameHint),
                     const SpaceH23(),
                     dropDownWidget(bloc, state, context),
-                    const SpaceH23(),
+                    const SpaceH26(),
                     selectDateWidget(bloc, state, context)
                   ],
                 ),
@@ -63,35 +64,24 @@ class AddEmployeeScreen extends StatelessWidget {
 
   Widget dropDownWidget(
       AddEmployeeBloc bloc, AddEmployeeState state, BuildContext context) {
-    Debug.setLog("here is result --> ${state.selectedRole}");
+    bool isRoleSelected = bloc.selectedRole != null;
+    String roleText = isRoleSelected ? bloc.selectedRole! : MyString.selectRole;
+    TextStyle textStyle =
+        isRoleSelected ? TextStyles.fieldTextStyle : TextStyles.hintTextStyle;
     return GestureDetector(
       onTap: () => openBottomDialog(context, bloc),
       child: Container(
         decoration: Decorations.fieldBorderBoxDecoration(),
         child: Row(
           children: [
-            customIcon(iconPath: IconPath.roleIcon),
+            CommonWidgets.customIcon(iconPath: IconPath.roleIcon,color: MyColor.appTheme,size: Sizes.WIDTH_18),
             Text(
-              state.selectedRole != null
-                  ? state.selectedRole!
-                  : MyString.selectRole,
-              style: state.selectedRole != null
-                  ? TextStyles.fieldTextStyle
-                  : TextStyles.hintTextStyle,
+              roleText,
+              style: textStyle,
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget customIcon({required String iconPath}) {
-    return IconButton(
-      icon: Image.asset(iconPath,
-          height: Sizes.WIDTH_18,
-          width: Sizes.WIDTH_18,
-          color: MyColor.appTheme),
-      onPressed: null,
     );
   }
 
@@ -136,38 +126,52 @@ class AddEmployeeScreen extends StatelessWidget {
     );
   }
 
-  Widget selectDateWidget(AddEmployeeBloc bloc, AddEmployeeState state, BuildContext context){
+  Widget selectDateWidget(
+      AddEmployeeBloc bloc, AddEmployeeState state, BuildContext context) {
+    bool isFromDateSelected = bloc.selectedFromDate != null;
+    String fromDateText =
+        isFromDateSelected ? bloc.selectedFromDate! : MyString.today;
+    bool isToDateSelected = bloc.selectedToDate != null;
+    String toDateText =
+        isToDateSelected ? bloc.selectedToDate! : MyString.noDate;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: dateItemWidget(onTap: () => openSelectDateDialog(context, bloc),date : state.selectedRole != null
-              ? state.selectedRole!
-              : MyString.today),
+          child: dateItemWidget(
+              state: state,
+              onTap: () => openSelectDateDialog(context: context, bloc: bloc),
+              date: fromDateText),
         ),
-
-        customIcon(iconPath: IconPath.rightArrowIcon),
-
+        CommonWidgets.customIcon(iconPath: IconPath.rightArrowIcon,color: MyColor.appTheme,size: Sizes.WIDTH_14),
         Expanded(
-          child: dateItemWidget(onTap: () => openSelectDateDialog(context, bloc),date : state.selectedRole != null
-              ? state.selectedRole!
-              : MyString.today),
+          child: dateItemWidget(
+              state: state,
+              textColor: isToDateSelected ? MyColor.textColor : MyColor.gray,
+              onTap: () => openSelectDateDialog(
+                  context: context, bloc: bloc, isToDate: true),
+              date: toDateText),
         ),
       ],
     );
   }
 
-  Widget dateItemWidget({void Function()? onTap,required String date}){
+  Widget dateItemWidget(
+      {void Function()? onTap,
+      required String date,
+      Color? textColor,
+      required AddEmployeeState state}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: screenWidth/2.5,
+        width: screenWidth / 2.5,
         decoration: Decorations.fieldBorderBoxDecoration(),
         child: Row(
           children: [
-            customIcon(iconPath: IconPath.calendarIcon),
-            Text(date,
-              style : TextStyles.dateTextStyle,
+            CommonWidgets.customIcon(iconPath: IconPath.calendarIcon,color: MyColor.appTheme,size: Sizes.WIDTH_18),
+            Text(
+              date,
+              style: TextStyles.dateTextStyle.copyWith(color: textColor),
             ),
           ],
         ),
@@ -175,80 +179,59 @@ class AddEmployeeScreen extends StatelessWidget {
     );
   }
 
-  void openSelectDateDialog(BuildContext context, AddEmployeeBloc bloc){
-    showDialog(context: context, builder: (context) {
-      return CustomDatePickerDialog();
-      return Dialog(
-        child: Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+  void openSelectDateDialog(
+      {required BuildContext context,
+      required AddEmployeeBloc bloc,
+      bool? isToDate}) async {
+    DateTime? selectedDate = await showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDatePickerDialog(isToDate: isToDate ?? false);
+      },
+    );
+    if (selectedDate != null) {
+      isToDate ?? false
+          ? bloc.add(SelectedToDateChanged(selectedDate.toDialogDate()))
+          : bloc.add(SelectedFromDateChanged(selectedDate.toDialogDate()));
+    }
+  }
+
+  Widget _bottomBar({required BuildContext context}) {
+    return Wrap(children: [
+      Divider(height: Sizes.HEIGHT_2,color: MyColor.dividerColor,),
+      Padding(
+          padding: EdgeInsets.symmetric(vertical: Sizes.HEIGHT_6,horizontal: Sizes.WIDTH_14),
+          child: Row(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(onPressed: () {}, child: Text('Today')),
-                  ElevatedButton(onPressed: () {}, child: Text('Next Monday')),
-                ],
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(onPressed: () {}, child: Text('Next Tuesday')),
-                  ElevatedButton(onPressed: () {}, child: Text('After 1 Week')),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.arrow_back),
-                  SizedBox(width: 8),
-                  Text('March 2023'),
-                  SizedBox(width: 8),
-                  Icon(Icons.arrow_forward),
-                ],
-              ),
-              SizedBox(height: 16),
-              Center(),
-              Divider(),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  Row(
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Sizes.WIDTH_10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      customIcon(iconPath: IconPath.calendarIcon),
-                      Text('5 Sep, 2023'),
+                      CommonWidgets.customButton(
+                          width: Sizes.WIDTH_90,
+                          textColor: MyColor.appTheme,
+                          onPressed: () => Navigator.pop(context),
+                          buttonText: MyString.cancel,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              MyColor.buttonBgColor,
+                            ),
+                          )),
+                      const SpaceW16(),
+                      CommonWidgets.customButton(
+                        width: Sizes.WIDTH_90,
+                        textColor: MyColor.white,
+                        onPressed: () => Navigator.pop(context),
+                        buttonText: MyString.save,
+                      ),
                     ],
                   ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('Cancel'),
-                        ),
-                        SizedBox(width: Sizes.WIDTH_16),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Perform save operation
-                          },
-                          child: Text(MyString.save),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                ),
               ),
-              SizedBox(height: 16),
             ],
-          ),
-        ),
-      );
-    },);
+          ))
+    ]);
   }
 }

@@ -2,6 +2,7 @@ import 'package:bloc_base_structure/Elements/Widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../Constants/constants.dart';
 import '../../Values/values.dart';
 import '../../themes/Style/text_styles.dart';
 
@@ -65,5 +66,32 @@ class CommonWidgets{
     );
   }
 
+  static Widget customButton(
+      {required void Function()? onPressed,
+        required String buttonText,
+        ButtonStyle? style,
+        double? width,
+        Color? textColor}) {
+    return SizedBox(
+      width: width ?? screenWidth / 2.5,
+      child: ElevatedButton(
+          style: style,
+          onPressed: onPressed,
+          child: Text(
+            buttonText,
+            style: TextStyles.dateTextStyle.copyWith(color: textColor),
+          )),
+    );
+  }
+
+  static Widget customIcon({required String iconPath,Color? color,double? size}) {
+    return IconButton(
+      icon: Image.asset(iconPath,
+          height: size ?? Sizes.WIDTH_14,
+          width: size ?? Sizes.WIDTH_14,
+          color: color ?? MyColor.textHintColor),
+      onPressed: null,
+    );
+  }
 
 }

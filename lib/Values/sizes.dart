@@ -98,6 +98,7 @@ class Sizes {
   static  double WIDTH_150 = 150.0.w;
   static  double WIDTH_120 = 120.0.w;
   static  double WIDTH_100 = 100.0.w;
+  static  double WIDTH_90 = 90.0.w;
   static  double WIDTH_80 = 80.0.w;
   static  double WIDTH_70 = 70.0.w;
   static  double WIDTH_60 = 60.0.w;
@@ -107,6 +108,7 @@ class Sizes {
   static  double WIDTH_30 = 30.0.w;
   static  double WIDTH_25 = 25.0.w;
   static  double WIDTH_24 = 24.0.w;
+  static  double WIDTH_23 = 23.0.w;
   static  double WIDTH_22 = 22.0.w;
   static  double WIDTH_20 = 20.0.w;
   static  double WIDTH_18 = 18.0.w;
