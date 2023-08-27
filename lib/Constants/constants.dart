@@ -14,6 +14,9 @@ double screenWidth = ScreenUtil().screenWidth;
 double screenHeight = ScreenUtil().screenWidth;
 double screenHeightOrg = ScreenUtil().screenHeight;
 
+//preference
+const deleteDialogPre = "Delete Dialog Preference";
+
 // database
 const databaseName = "Employee_Database";
 const tableName = "employees";

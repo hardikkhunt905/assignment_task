@@ -1,12 +1,7 @@
 import 'package:assignment_task/Routing/Routes.dart';
 import 'package:flutter/material.dart';
-import 'package:assignment_task/Constants/constants.dart';
-import 'package:assignment_task/Elements/Widgets/toast.dart';
 import 'package:assignment_task/Values/values.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../Constants/Utils/utils.dart';
-import '../../Constants/preferences.dart';
 import '../../Routing/app_navigator.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -42,18 +37,15 @@ class _SplashScreenState extends State<SplashScreen>  with TickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
-    ToastContext().init(context);
     return Scaffold(
         body:
         Center(
-          child: Container(
-            child: FadeTransition(
-              opacity: _animation,
-              child: Image.asset(
-                ImagePath.flutterLogo,
-                height: 150.h,
-              )),
-            ),
+          child: FadeTransition(
+            opacity: _animation,
+            child: Image.asset(
+              ImagePath.flutterLogo,
+              height: 150.h,
+            )),
         ),
         );
   }

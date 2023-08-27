@@ -21,12 +21,21 @@ class MyString{
   static const currentEmployees = "Current employees";
   static const previousEmployees = "Previous employees";
   static const from = "From";
+  static const delete = "Delete";
+  static const ok = "OK";
+  static const deleteEmployee = "Delete Employee Data";
+  static const deleteConfirmation = "Are you sure you want to delete";
+  static const deleteSuccess = "Employee data has been deleted";
+  static const swipeLeftToDelete = "Swipe left to delete employee data";
 
   //db strings
   static const name = "name";
   static const role = "role";
   static const fromDate = "fromDate";
   static const toDate = "toDate";
+
+  //edit employee
+  static const editEmployeeDetails = "Edit Employee Details";
 
 
   // basic strings

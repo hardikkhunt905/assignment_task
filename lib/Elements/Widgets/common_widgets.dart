@@ -8,9 +8,16 @@ import '../../themes/Style/text_styles.dart';
 
 class CommonWidgets{
 
-  static AppBar customAppBar({required String title}) {
+  static AppBar customAppBar({required String title,void Function()? onTap,bool? isActionIcon}) {
     return AppBar(
       title: Text(title,style: TextStyles.appbarTextStyle),
+      actions: [
+        isActionIcon ?? false ? GestureDetector(onTap: onTap,
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: Sizes.WIDTH_20,vertical: Sizes.HEIGHT_10),
+              child: Image.asset(IconPath.deleteIcon,width: Sizes.WIDTH_18,height: Sizes.WIDTH_18),
+            )) : const SizedBox.shrink()
+      ],
     );
   }
 

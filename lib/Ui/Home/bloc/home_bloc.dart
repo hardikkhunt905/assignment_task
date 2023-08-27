@@ -1,4 +1,5 @@
 import 'package:assignment_task/Constants/constants.dart';
+import 'package:assignment_task/Constants/preferences.dart';
 import 'package:assignment_task/Models/EmployeeData/employee_data.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -13,7 +14,6 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DatabaseHelper databaseHelper = DatabaseHelper();
-
   List<EmployeeData> employeeList = [];
   List<EmployeeData> currentEmployeeList = [];
   List<EmployeeData> previousEmployeeList = [];
@@ -21,7 +21,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   bool isLoading = false;
 
   HomeBloc() : super(HomeInitial()) {
-    on<HomeEvent>((event, emit) {});
+    on<HomeEvent>((event, emit) {
+    });
+
+    on<CheckFirstTimeEvent>((event, emit) async{
+        bool isSecondTime = await Preferences.getPrefBool(deleteDialogPre);
+      if (!isSecondTime) {
+        Preferences.setPrefBool(deleteDialogPre, true);
+        emit(ShowDeleteDialogState());
+      }
+    });
 
     on<FetchEmployeeListEvent>((event, emit) async {
       await getListData(emit: emit);

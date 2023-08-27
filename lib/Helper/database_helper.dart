@@ -23,7 +23,7 @@ class DatabaseHelper {
       onCreate: (db, version) {
         return db.execute(
             '''
-          CREATE TABLE ${tableName} (
+          CREATE TABLE $tableName (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             ${MyString.name} TEXT,
             ${MyString.role} TEXT,

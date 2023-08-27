@@ -22,10 +22,6 @@ class AppBloc {
     BlocProvider<HomeBloc>(
       create: (context) => homeBloc,
     ),
-    //
-    // BlocProvider<AddEmployeeBloc>(
-    //   create: (context) => addEmployeeBloc,
-    // ),
 
   ];
 

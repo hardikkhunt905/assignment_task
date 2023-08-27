@@ -48,7 +48,7 @@ class MyColor {
   static const magenta = Color(0xFFFF00FF);
   static const pink = Color(0xFFFFC0CB);
 
-  static const Color grey = Color(0xFFE0E0E0);
+  static const grey = Color(0xFFE0E0E0);
   static const silver = Color(0xFFC0C0C0);
   static const gray   = Color(0xFF808080);
   static const darkGray   = Color(0xFF595959);
@@ -57,16 +57,6 @@ class MyColor {
   static const olive  = Color(0xFF808000);
   static const aquamarine = Color(0xFF7FFD4);
 
-  //shades
-  static const Color blackShade3 = Color(0xFF797C82);
-  static const Color blackShade5 = Color(0xFF323345);
-  static const Color blackShade7 = Color(0xFF2F2F2F);
-  static const Color blackShade9 = Color(0xFF767676);
-  static const Color blackShade10 = Color(0xFF606060);
-
-  static const Color pinkShade2 = Color(0xFFFF9796);
-
-  static const Color whiteShade1 = Color(0xFFF6F6F6);
 
 
 

@@ -1,6 +1,5 @@
 import 'package:assignment_task/Constants/constants.dart';
 import 'package:assignment_task/Models/AddEmployeeData/add_employee_data.dart';
-import 'package:assignment_task/Models/EmployeeData/employee_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../Helper/database_helper.dart';

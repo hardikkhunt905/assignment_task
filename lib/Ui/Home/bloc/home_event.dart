@@ -5,6 +5,11 @@ abstract class HomeEvent {}
 
 class OnAddEmployee extends HomeEvent{}
 
+class CheckFirstTimeEvent extends HomeEvent {}
+
+class ShowDeleteDialogState extends HomeState {}
+
+
 class FetchEmployeeListEvent extends HomeEvent {
   final List<EmployeeData> employeeList;
   FetchEmployeeListEvent(this.employeeList);
